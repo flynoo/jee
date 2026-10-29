@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jee</title>
+<style>
+
+*{box-sizing:border-box}
+html,body{margin:0}
+.screen{display:none}
+.screen.active{display:block}
+
+/* ===== lock screen ===== */
+#screen-lock{color-scheme: light;
+      --bg: #fff;
+      --card: #fff;
+      --text: #171717;
+      --muted: #777;
+      --border: #e7e7e7;
+      --field: #fafafa;
+      --button: #171717;
+      --button-text: #fff;
+      --accent: #635bff;
+      --shadow: 0 16px 55px rgba(0,0,0,.045);}
+body.dark #screen-lock{color-scheme: dark;
+      --bg: #101114;
+      --card: #17181d;
+      --text: #f5f5f5;
+      --muted: #a0a0aa;
+      --border: #303139;
+      --field: #202127;
+      --button: #f5f5f5;
+      --button-text: #171717;
+      --accent: #a39dff;
+      --shadow: 0 16px 55px rgba(0,0,0,.2);}
+#screen-lock{margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      transition: background .2s, color .2s;}
+#screen-lock .topbar{height: 76px;
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);}
+#screen-lock .brand-mini{display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 2px;}
+#screen-lock .mini-logo{display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 9px;
+      font-size: 17px;}
+#screen-lock .theme-toggle{display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font-size: 13px;}
+#screen-lock .page{min-height: calc(100vh - 76px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px 20px;}
+#screen-lock .login-card{width: 100%;
+      max-width: 390px;
+      padding: 38px 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);}
+#screen-lock .logo-box{width: 76px;
+      height: 76px;
+      margin: 0 auto 28px;
+      display: grid;
+      place-items: center;
+      background: var(--text);
+      color: var(--bg);
+      border-radius: 22px;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 3px;}
+#screen-lock h1{margin: 0;
+      text-align: center;
+      font-size: 27px;
+      letter-spacing: -.8px;}
+#screen-lock .subtitle{margin: 11px 0 30px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;}
+#screen-lock label{display: block;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 650;}
+#screen-lock .input-wrap{display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      background: var(--field);
+      border-radius: 11px;
+      padding-right: 12px;}
+#screen-lock .input-wrap:focus-within{border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,91,255,.12);}
+#screen-lock input{width: 100%;
+      min-width: 0;
+      padding: 15px 13px;
+      background: transparent;
+      color: var(--text);
+      border: 0;
+      outline: 0;
+      font-size: 14px;}
+#screen-lock input::placeholder{color: var(--muted);}
+#screen-lock .eye-btn{background: transparent;
+      border: 0;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;}
+#screen-lock .unlock-btn{width: 100%;
+      margin-top: 17px;
+      padding: 15px 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 0;
+      border-radius: 11px;
+      background: var(--button);
+      color: var(--button-text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;}
+#screen-lock .unlock-btn:hover{opacity: .85;}
+#screen-lock .unlock-btn:disabled{opacity: .6; cursor: wait;}
+#screen-lock .arrow{font-size: 20px;}
+#screen-lock #message{min-height: 18px;
+      margin: 12px 0 0;
+      font-size: 12px;
+      text-align: center;
+      color: #d94b4b;
+      overflow-wrap: anywhere;}
+#screen-lock .secure-note{display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-top: 19px;
+      color: var(--muted);
+      font-size: 12px;}
+#screen-lock .shield{color: #22a06b;}
+#screen-lock footer{margin-top: 36px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;}
+@media (max-width: 480px){
+#screen-lock .topbar{height: 65px; padding: 0 20px;}
+#screen-lock .page{min-height: calc(100vh - 65px);
+        padding: 25px 16px;}
+#screen-lock .login-card{padding: 32px 22px;}
+#screen-lock h1{font-size: 24px;}
+}
+/* ===== study screen ===== */
+#screen-study{--bg: #ffffff;
+  --text: #18181b;
+  --muted: #71717a;
+  --line: #e9e9ed;
+  --soft: #f7f7fa;
+  --purple: #6757e8;}
+#screen-study{margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;}
+#screen-study .navbar{height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);}
+#screen-study .brand{display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 850;}
+#screen-study .brand small{display: block;
+  margin-top: 3px;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--muted);}
+#screen-study .brand-icon{display: grid;
+  place-items: center;
+  background: var(--text);
+  color: white;
+  border-radius: 10px;
+  font-weight: 800;}
+#screen-study .brand-icon{width: 37px;
+  height: 37px;}
+#screen-study .navbar nav{display: flex;
+  gap: 28px;}
+#screen-study .navbar nav a{color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;}
+#screen-study .profile{width: 37px;
+  height: 37px;
+  border: 0;
+  border-radius: 50%;
+  background: #eeeaff;
+  color: var(--purple);
+  font-weight: 800;
+  cursor: pointer;}
+#screen-study .hero{padding: 95px 24px 90px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 0%, #f0edff 0%, transparent 62%);}
+#screen-study .eyebrow{color: var(--purple);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;}
+#screen-study .hero h1{margin: 22px 0 14px;
+  font-size: clamp(42px, 6vw, 67px);
+  line-height: 1.08;
+  letter-spacing: -3px;}
+#screen-study .hero h1 span{color: var(--purple);}
+#screen-study .hero p, #screen-study .resources > p{color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;}
+#screen-study .primary-btn{display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  margin-top: 23px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: #201d30;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;}
+#screen-study .section, #screen-study .resources{max-width: 1080px;
+  margin: auto;
+  padding: 60px 24px;}
+#screen-study .section-heading{display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;}
+#screen-study h2{margin: 9px 0 0;
+  font-size: 28px;
+  letter-spacing: -1px;}
+#screen-study .count{color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;}
+#screen-study .subject-grid{display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;}
+#screen-study .subject-card{padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  transition: transform .2s, box-shadow .2s;}
+#screen-study .subject-card:hover{transform: translateY(-4px);
+  box-shadow: 0 12px 35px #0000000b;}
+#screen-study .subject-symbol{display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  font-size: 24px;}
+#screen-study .purple{background: #efecff; color: #6757e8;}
+#screen-study .orange{background: #fff0e5; color: #c76b23;}
+#screen-study .green{background: #e6f7ed; color: #278b56;}
+#screen-study .tag{font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 1.5px;}
+#screen-study .subject-card h3{margin: 12px 0 8px;
+  font-size: 19px;}
+#screen-study .subject-card p, #screen-study .resource-row p{color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;}
+#screen-study .subject-card a{display: inline-block;
+  margin-top: 10px;
+  color: var(--purple);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;}
+#screen-study .resources{border-top: 1px solid var(--line);}
+#screen-study .resource-row{display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px 0;
+  border-bottom: 1px solid var(--line);}
+#screen-study .resource-icon{display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 11px;
+  background: var(--soft);
+  font-size: 20px;}
+#screen-study .resource-row strong{font-size: 13px;}
+#screen-study .resource-row p{margin: 5px 0 0;}
+#screen-study .resource-arrow{margin-left: auto;
+  color: var(--muted);}
+#screen-study footer{padding: 25px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--line);}
+@media (max-width: 650px){
+#screen-study .navbar{padding: 0 18px;}
+#screen-study .navbar nav{gap: 12px;}
+#screen-study .navbar nav a{font-size: 11px;}
+#screen-study .hero{padding: 75px 20px;}
+#screen-study .hero h1{letter-spacing: -1.5px;}
+#screen-study .subject-grid{grid-template-columns: 1fr;}
+#screen-study .section-heading{align-items: start;
+    flex-direction: column;}
+}
+#screen-study .back-button{display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid #e9e9ed;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #18181b;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;}
+#screen-study .back-button:hover{background: #f4f4f7;}
+/* ===== chat screen ===== */
+#screen-chat{color-scheme:light;--bg:#fff;--panel:#fff;--text:#171717;--muted:#737373;--border:#e5e7eb;--input:#f9fafb;--hover:#f3f4f6;--primary:#2563eb;--bubble:#eff6ff;--danger:#dc2626}
+body.dark #screen-chat{color-scheme:dark;--bg:#111318;--panel:#191c23;--text:#f5f5f5;--muted:#a1a1aa;--border:#30343d;--input:#222630;--hover:#292d37;--primary:#648cff;--bubble:#252f48;--danger:#f87171}
+#screen-chat{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;transition:background .2s,color .2s}
+#screen-chat button, #screen-chat input{font:inherit}
+#screen-chat button{cursor:pointer;border:none}
+#screen-chat button:disabled{opacity:.6;cursor:wait}
+#screen-chat header{height:70px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;background:var(--panel);z-index:5}
+#screen-chat .brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:700}
+#screen-chat .logo{width:40px;height:40px;border-radius:13px;background:var(--primary);color:white;display:grid;place-items:center;font-size:22px}
+#screen-chat .icon-btn, #screen-chat .logout-btn{background:var(--input);color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:12px}
+#screen-chat main{max-width:760px;margin:0 auto;padding:30px 18px}
+#screen-chat .welcome{margin-bottom:25px}
+#screen-chat .welcome h1{font-size:28px;margin:0 0 8px}
+#screen-chat .welcome p{margin:0;color:var(--muted);line-height:1.5}
+#screen-chat .search-wrap{position:relative}
+#screen-chat .search-box{display:flex;gap:9px;padding:7px;border:1px solid var(--border);border-radius:15px;background:var(--input)}
+#screen-chat .search-box input{min-width:0;flex:1;background:transparent;color:var(--text);border:none;outline:none;padding:12px 10px}
+#screen-chat .primary-btn{background:var(--primary);color:white;border-radius:11px;padding:12px 18px;font-weight:600}
+#screen-chat .primary-btn:disabled{opacity:.6;cursor:wait}
+#screen-chat #chatStatus{min-height:22px;margin:12px 3px;color:var(--muted);font-size:14px}
+#screen-chat .suggestions{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--panel);border:1px solid var(--border);border-radius:13px;box-shadow:0 10px 25px #00000012;overflow:hidden;z-index:10;display:none;max-height:330px;overflow-y:auto}
+#screen-chat .suggestions.show{display:block}
+#screen-chat .suggestion{width:100%;display:flex;align-items:center;gap:11px;text-align:left;padding:11px 13px;background:var(--panel);color:var(--text);border-bottom:1px solid var(--border)}
+#screen-chat .suggestion:last-child{border-bottom:0}
+#screen-chat .suggestion:hover{background:var(--hover)}
+#screen-chat .section-heading{display:flex;justify-content:space-between;align-items:center;margin:32px 0 14px}
+#screen-chat .section-heading h2{font-size:19px;margin:0}
+#screen-chat .count{color:var(--muted);font-size:13px}
+#screen-chat .list{border:1px solid var(--border);border-radius:16px;overflow:hidden}
+#screen-chat .friend-row{display:flex;align-items:center;gap:10px;padding:13px;border-bottom:1px solid var(--border)}
+#screen-chat .friend-row:last-child{border-bottom:none}
+#screen-chat .friend-row:hover{background:var(--hover)}
+#screen-chat .friend-open{flex:1;min-width:0;display:flex;align-items:center;gap:13px;text-align:left;background:transparent;color:var(--text);padding:0}
+#screen-chat .avatar{width:47px;height:47px;border-radius:50%;background:var(--bubble);color:var(--primary);display:grid;place-items:center;font-size:19px;font-weight:700;flex-shrink:0}
+#screen-chat .details{min-width:0;flex:1}
+#screen-chat .name{font-weight:700;margin-bottom:5px;overflow-wrap:anywhere}
+#screen-chat .subtext{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+#screen-chat .empty{text-align:center;padding:30px 15px;color:var(--muted);line-height:1.6}
+#screen-chat .profile{margin-top:25px;padding:15px;border:1px solid var(--border);border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+#screen-chat .profile-info{min-width:0}
+#screen-chat .profile-info strong{display:block;margin-bottom:5px}
+#screen-chat .profile-info span{color:var(--muted);overflow-wrap:anywhere}
+#screen-chat .result-card{display:none;margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:16px;background:var(--panel)}
+#screen-chat .result-card.show{display:block}
+#screen-chat .result-top{display:flex;align-items:center;gap:13px;margin-bottom:15px}
+#screen-chat .result-actions{display:flex;gap:9px;flex-wrap:wrap}
+#screen-chat .secondary-btn{background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:11px;padding:11px 15px}
+#screen-chat .delete-btn{background:transparent;color:var(--danger);border:1px solid var(--border);border-radius:10px;padding:9px 11px;flex-shrink:0}
+@media(max-width:480px){
+#screen-chat header{padding:0 13px}
+#screen-chat main{padding:24px 13px}
+#screen-chat .welcome h1{font-size:24px}
+#screen-chat .brand{font-size:18px}
+#screen-chat .primary-btn{padding:12px 13px}
+#screen-chat .profile{align-items:flex-start}
+#screen-chat .friend-row{gap:8px;padding:11px}
+#screen-chat .friend-open{gap:10px}
+#screen-chat .avatar{width:43px;height:43px}
+#screen-chat .delete-btn{padding:8px}
+}
+/* ===== conv screen ===== */
+#screen-conv{color-scheme:light;--bg:#f5f7fb;--panel:#fff;--text:#171717;--muted:#737373;--border:#e5e7eb;--primary:#2563eb;--mine:#2563eb;--theirs:#fff;--input:#f9fafb}
+body.dark #screen-conv{color-scheme:dark;--bg:#111318;--panel:#191c23;--text:#f5f5f5;--muted:#a1a1aa;--border:#30343d;--primary:#648cff;--mine:#355bc5;--theirs:#252a34;--input:#222630}
+#screen-conv{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+#screen-conv button, #screen-conv input{font:inherit}
+#screen-conv button{cursor:pointer}
+#screen-conv header{height:70px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 18px;position:sticky;top:0;z-index:2}
+#screen-conv .back{background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:11px;padding:10px 13px}
+#screen-conv .person{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
+#screen-conv .avatar{width:43px;height:43px;border-radius:50%;background:#e7edff;color:var(--primary);display:grid;place-items:center;font-weight:700;font-size:19px;flex-shrink:0}
+#screen-conv .person-name{font-weight:700;overflow-wrap:anywhere}
+#screen-conv .online-status{font-size:12px;color:var(--muted);margin-top:4px}
+#screen-conv .theme{background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:11px;padding:10px}
+#screen-conv main{max-width:850px;margin:auto;height:calc(100dvh - 70px);display:flex;flex-direction:column;background:var(--panel);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+#screen-conv #convStatus{padding:9px 14px;color:var(--muted);font-size:13px;border-bottom:1px solid var(--border);min-height:34px}
+#screen-conv #messages{flex:1;overflow-y:auto;padding:20px 15px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+#screen-conv .empty{text-align:center;color:var(--muted);padding:35px 12px;line-height:1.6}
+#screen-conv .message-row{display:flex;flex-direction:column;max-width:80%;align-self:flex-start;gap:4px}
+#screen-conv .message-row.mine{align-self:flex-end;align-items:flex-end}
+#screen-conv .bubble{padding:11px 14px;border-radius:17px;background:var(--theirs);border:1px solid var(--border);line-height:1.45;overflow-wrap:anywhere;white-space:pre-wrap}
+#screen-conv .mine .bubble{background:var(--mine);color:#fff;border-color:transparent;border-bottom-right-radius:5px}
+#screen-conv .message-row:not(.mine) .bubble{border-bottom-left-radius:5px}
+#screen-conv .message-meta{font-size:11px;color:var(--muted);padding:0 4px}
+#screen-conv .composer{display:flex;align-items:flex-end;gap:9px;padding:12px;border-top:1px solid var(--border);background:var(--panel)}
+#screen-conv #messageInput{flex:1;min-width:0;max-height:130px;resize:none;padding:13px 14px;border:1px solid var(--border);border-radius:18px;background:var(--input);color:var(--text);outline:none;line-height:1.4}
+#screen-conv #messageInput:focus{border-color:var(--primary)}
+#screen-conv #sendBtn{background:var(--primary);color:#fff;border:0;border-radius:15px;padding:13px 18px;font-weight:700;min-height:46px}
+#screen-conv #sendBtn:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:480px){
+#screen-conv header{padding:0 10px;gap:8px}
+#screen-conv .theme{padding:9px;font-size:13px}
+#screen-conv #messages{padding:15px 10px}
+#screen-conv .message-row{max-width:88%}
+#screen-conv .composer{padding:9px;gap:7px}
+#screen-conv #sendBtn{padding:12px 14px}
+}
+
+
+/* ===== study extras (nav buttons + dark mode) ===== */
+#screen-study .nav-actions{display:flex;gap:8px}
+#screen-study button.back-button{font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+body.dark #screen-study{color-scheme:dark;--bg:#101114;--text:#f5f5f5;--muted:#a0a0aa;--line:#303139;--soft:#202127;--purple:#a39dff}
+body.dark #screen-study .hero{background:radial-gradient(ellipse at 50% 0%, #25214a 0%, transparent 62%)}
+body.dark #screen-study .primary-btn{background:#f5f5f5;color:#101114}
+body.dark #screen-study .brand-icon{color:var(--bg)}
+body.dark #screen-study .profile{background:#2a2650}
+body.dark #screen-study .purple{background:#2a2650;color:#b8b2ff}
+body.dark #screen-study .orange{background:#3a2a1c;color:#ffb27a}
+body.dark #screen-study .green{background:#1b3326;color:#6fd69b}
+body.dark #screen-study .back-button{background:#17181d;color:#f5f5f5;border-color:#303139}
+body.dark #screen-study .back-button:hover{background:#202127}
+
+</style>
+</head>
+<body>
+
+<!-- ============ SCREEN 1: LOCK ============ -->
+<div id="screen-lock" class="screen active">
+<header class="topbar">
+    <div class="brand-mini">
+      <span class="mini-logo">J</span>
+      <span>JEE</span>
+    </div>
+
+    <button id="themeToggle" class="theme-toggle" type="button">
+      <span id="themeIcon">☾</span>
+      <span id="themeText">Dark</span>
+    </button>
+  </header>
+
+  <main class="page">
+    <section class="login-card">
+      <div class="logo-box">JEE</div>
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Enter your password to continue.</p>
+
+      <form id="unlockForm">
+        <label for="password">Access password</label>
+
+        <div class="input-wrap">
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            type="button"
+            id="showPassword"
+            class="eye-btn"
+          >Show</button>
+        </div>
+
+        <button type="submit" class="unlock-btn" id="unlockButton">
+          <span>Unlock</span>
+          <span class="arrow">→</span>
+        </button>
+
+        <p id="message" role="status"></p>
+      </form>
+
+      <div class="secure-note">
+        <span class="shield">◆</span>
+        Private access
+      </div>
+    </section>
+
+    <footer>JEE · Your private space</footer>
+  </main>
+</div>
+
+<!-- ============ SCREEN 2: STUDY ============ -->
+<div id="screen-study" class="screen">
+<header class="navbar">
+    <a class="brand" href="#">
+      <span class="brand-icon">J</span>
+      <span>JEE<small>LEARNING</small></span>
+    </a>
+
+    <nav>
+      <a href="#subjects">Subjects</a>
+      <a href="#resources">Resources</a>
+    </nav>
+
+ <div class="nav-actions"><button type="button" class="back-button" id="studyThemeBtn" aria-label="Toggle theme">🌙</button><button type="button" class="back-button" id="studyBackBtn">← Back</button></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">YOUR LEARNING SPACE</span>
+      <h1>Learn smarter.<br><span>Go further.</span></h1>
+      <p>Explore your study resources, organised in one place.</p>
+
+      <a class="primary-btn" href="#subjects">
+        Explore materials <span>→</span>
+      </a>
+    </section>
+
+    <section class="section" id="subjects">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR LIBRARY</span>
+          <h2>Study by subject</h2>
+        </div>
+        <span class="count">03 SUBJECTS</span>
+      </div>
+
+      <div class="subject-grid">
+        <article class="subject-card">
+          <div class="subject-symbol purple">∑</div>
+          <span class="tag">MATHEMATICS</span>
+          <h3>Mathematics</h3>
+          <p>Concepts, formulas and practice notes.</p>
+          <a target="_blank" rel="noopener" href="https://www.esaral.com/media/uploads/2024/4/5/1266-JEE-Main-Maths-Revision-Notes-on-Complex-Numbers-and-Quadratic-Equations.pdf">View chapters ↗</a>
+        </article>
+
+        <article class="subject-card">
+          <div class="subject-symbol orange">⚛</div>
+          <span class="tag">PHYSICS</span>
+          <h3>Physics</h3>
+          <p>Understand concepts step by step.</p>
+          <a target="_blank" rel="noopener" href="https://www.esaral.com/media/uploads/2024/4/2/121122-JEE-Main-2024-Physics-and-Measurement-Revision-Notes-Free-PDF-Download.pdf">View chapters ↗</a>
+        </article>
+
+        <article class="subject-card">
+          <div class="subject-symbol green">⌬</div>
+          <span class="tag">CHEMISTRY</span>
+          <h3>Chemistry</h3>
+          <p>Revision notes and key topics.</p>
+          <a target="_blank" rel="noopener" href="https://www.esaral.com/media/uploads/2024/4/2/131931-Atomic-structure-Revisios-Notes-for-JEE-Main.pdf">View chapters ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="resources" id="resources">
+      <span class="eyebrow">QUICK ACCESS</span>
+      <h2>Continue learning</h2>
+      <p>Organise your notes and revision resources here.</p>
+
+      <div class="resource-row">
+        <span class="resource-icon">▤</span>
+        <div>
+          <strong>Class Notes</strong>
+          <p>Topic-wise notes and summaries</p>
+        </div>
+        <span class="resource-arrow">→</span>
+      </div>
+
+      <div class="resource-row">
+        <span class="resource-icon">✓</span>
+        <div>
+          <strong>Practice Questions</strong>
+          <p>Questions for regular practice</p>
+        </div>
+        <span class="resource-arrow">→</span>
+      </div>
+    </section>
+
+    <footer>JEE Learning Space · Keep learning every day.</footer>
+  </main>
+
+  
+</div>
+
+<!-- ============ SCREEN 3: CHAT / FRIENDS ============ -->
+<div id="screen-chat" class="screen">
+<header>
+  <div class="brand"><div class="logo">✉</div>Private Chat</div>
+  <button class="icon-btn" id="chatThemeToggle" type="button">🌙 Dark</button>
+</header>
+
+<main>
+  <section class="welcome">
+    <h1>Your messages</h1>
+    <p>Search a username to view their profile and add them as a friend.</p>
+  </section>
+
+  <div class="search-wrap">
+    <form class="search-box" id="searchForm">
+      <input id="usernameSearch" type="text"
+        placeholder="Search username..."
+        autocomplete="off" required>
+      <button class="primary-btn" type="submit">Search</button>
+    </form>
+    <div class="suggestions" id="suggestions" role="listbox"></div>
+  </div>
+
+  <div id="chatStatus" role="status" aria-live="polite"></div>
+
+  <section class="result-card" id="resultCard">
+    <div class="result-top">
+      <div class="avatar" id="resultAvatar">?</div>
+      <div class="details">
+        <div class="name" id="resultName">@username</div>
+        <div class="subtext">Private Chat user</div>
+      </div>
+    </div>
+    <div class="result-actions">
+      <button class="primary-btn" id="addFriendBtn" type="button">＋ Add Friend</button>
+      <button class="secondary-btn" id="openChatBtn" type="button" hidden>Open Chat</button>
+    </div>
+  </section>
+
+  <div class="section-heading">
+    <h2>Your Friends</h2>
+    <span class="count" id="friendCount">0 friends</span>
+  </div>
+
+  <section class="list" id="friendList">
+    <div class="empty">Your friends will appear here. Search a username and tap Add Friend.</div>
+  </section>
+
+  <section class="profile">
+    <div class="profile-info">
+      <strong id="myUsername">Your account</strong>
+      <span id="myEmail">Checking login...</span>
+    </div>
+    <button class="logout-btn" id="logoutBtn" type="button">Log out</button>
+  </section>
+</main>
+</div>
+
+<!-- ============ SCREEN 4: CONVERSATION ============ -->
+<div id="screen-conv" class="screen">
+<header>
+  <button class="back" id="backBtn" type="button">← Back</button>
+  <div class="person">
+    <div class="avatar" id="headerAvatar">?</div>
+    <div style="min-width:0">
+      <div class="person-name" id="headerName">Loading...</div>
+      <div class="online-status" id="headerStatus">Connecting...</div>
+    </div>
+  </div>
+  <button class="theme" id="convThemeBtn" type="button">🌙</button>
+</header>
+
+<main>
+  <div id="convStatus" role="status" aria-live="polite">Connecting to chat...</div>
+  <section id="messages" aria-label="Messages">
+    <div class="empty">Loading messages...</div>
+  </section>
+  <form class="composer" id="composer">
+    <textarea id="messageInput" rows="1" maxlength="2000"
+      placeholder="Type a message..." aria-label="Message" required></textarea>
+    <button id="sendBtn" type="submit">Send ➤</button>
+  </form>
+</main>
+</div>
+
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import {
+  getDatabase, ref, get, set, push, remove,
+  onValue, onChildAdded, query, limitToLast, runTransaction
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDDxPkDQivEN8YtTgUbER8g3wdk7paAuEY",
+  authDomain: "jee1-3c96a.firebaseapp.com",
+  databaseURL: "https://jee1-3c96a-default-rtdb.firebaseio.com",
+  projectId: "jee1-3c96a",
+  storageBucket: "jee1-3c96a.firebasestorage.app",
+  messagingSenderId: "92796387355",
+  appId: "1:92796387355:web:fda978d6827ecfee7e78be",
+  measurementId: "G-MPZTE4Q2R1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const provider = new GoogleAuthProvider();
+const $ = id => document.getElementById(id);
+
+/* =====================================================
+   SCREEN NAVIGATION  (lock -> study | chat -> conv)
+   ===================================================== */
+const SCREENS = ["lock", "study", "chat", "conv"];
+let currentScreen = "lock";
+let studyUnlocked = false;
+let me = null;
+
+function showScreen(name, pushState = true) {
+  if (currentScreen === "conv" && name !== "conv") stopConversation();
+  if (name === "lock") {
+    studyUnlocked = false;
+    resetLockForm();
+  }
+  for (const s of SCREENS) {
+    $("screen-" + s).classList.toggle("active", s === name);
+  }
+  currentScreen = name;
+  window.scrollTo(0, 0);
+  if (pushState) history.pushState({ screen: name }, "");
+}
+
+history.replaceState({ screen: "lock" }, "");
+
+// Phone / browser Back button support
+window.addEventListener("popstate", event => {
+  const wanted = event.state && event.state.screen;
+  if (!wanted) return;
+  let target = wanted;
+  if (target === "study" && !studyUnlocked) target = "lock";
+  if ((target === "chat" || target === "conv") && !me) target = "lock";
+  if (target === "conv") target = "chat";
+  showScreen(target, false);
+});
+
+/* =====================================================
+   THEME (shared by all screens)
+   ===================================================== */
+function applyTheme(dark) {
+  document.body.classList.toggle("dark", dark);
+  $("themeIcon").textContent = dark ? "☀" : "☾";
+  $("themeText").textContent = dark ? "Light" : "Dark";
+  $("chatThemeToggle").textContent = dark ? "☀️ Light" : "🌙 Dark";
+  $("convThemeBtn").textContent = dark ? "☀️" : "🌙";
+  $("studyThemeBtn").textContent = dark ? "☀️" : "🌙";
+  try { localStorage.setItem("jeeTheme", dark ? "dark" : "light"); } catch (e) {}
+}
+
+function toggleTheme() {
+  applyTheme(!document.body.classList.contains("dark"));
+}
+
+["themeToggle", "chatThemeToggle", "convThemeBtn", "studyThemeBtn"]
+  .forEach(id => $(id).addEventListener("click", toggleTheme));
+
+try { applyTheme(localStorage.getItem("jeeTheme") === "dark"); }
+catch (e) { applyTheme(false); }
+
+/* =====================================================
+   LOCK SCREEN
+   ===================================================== */
+const passwordInput = $("password");
+const showPassword = $("showPassword");
+const unlockForm = $("unlockForm");
+const unlockButton = $("unlockButton");
+const message = $("message");
+
+function resetLockForm() {
+  passwordInput.value = "";
+  passwordInput.type = "password";
+  showPassword.textContent = "Show";
+  message.textContent = "";
+  message.style.color = "#d94b4b";
+  unlockButton.disabled = false;
+}
+
+showPassword.addEventListener("click", () => {
+  const showing = passwordInput.type === "text";
+  passwordInput.type = showing ? "password" : "text";
+  showPassword.textContent = showing ? "Show" : "Hide";
+});
+
+function getCurrentUser() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      user => { unsubscribe(); resolve(user); },
+      error => { unsubscribe(); reject(error); }
+    );
+  });
+}
+
+function askForUsername(suggested = "") {
+  const answer = prompt(
+    "Choose a UNIQUE username (3–20 letters, numbers or underscores):",
+    suggested
+  );
+  if (answer === null) return null;
+  const username = answer.trim();
+  if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
+    throw new Error(
+      "Username must be 3–20 characters using letters, numbers or underscores."
+    );
+  }
+  return username;
+}
+
+async function reserveUniqueUsername(username, uid) {
+  const usernameKey = username.toLowerCase();
+  const usernameRef = ref(db, "usernames/" + usernameKey);
+
+  const result = await runTransaction(usernameRef, currentValue => {
+    if (currentValue === null || currentValue === uid) return uid;
+    return; // abort if someone else owns it
+  });
+
+  if (!result.committed || result.snapshot.val() !== uid) {
+    throw new Error("That username is already taken. Please choose another.");
+  }
+  return usernameKey;
+}
+
+async function createOrOpenProfile(user) {
+  const profileRef = ref(db, "users/" + user.uid);
+  const snapshot = await get(profileRef);
+  const profile = snapshot.val() || {};
+
+  if (profile.username) {
+    sessionStorage.setItem("jeeUserUid", user.uid);
+    await enterChat(user);
+    return;
+  }
+
+  const suggested = (user.displayName || "")
+    .trim().replace(/[^A-Za-z0-9_]/g, "").slice(0, 20);
+
+  while (true) {
+    let username;
+    try {
+      username = askForUsername(suggested);
+    } catch (error) {
+      alert(error.message);
+      continue;
+    }
+
+    if (username === null) {
+      message.textContent =
+        "Username setup cancelled. Enter the access password to try again.";
+      return;
+    }
+
+    try {
+      const usernameKey = await reserveUniqueUsername(username, user.uid);
+
+      await set(profileRef, {
+        uid: user.uid,
+        username: usernameKey,
+        email: user.email || "",
+        createdAt: profile.createdAt || Date.now()
+      });
+
+      sessionStorage.setItem("jeeUserUid", user.uid);
+      message.style.color = "#22a06b";
+      message.textContent = "Username saved! Opening chat...";
+      await enterChat(user);
+      return;
+
+    } catch (error) {
+      if (error.message && error.message.includes("already taken")) {
+        alert(error.message);
+        continue;
+      }
+      throw error;
+    }
+  }
+}
+
+async function openPrivateAccess() {
+  let user = await getCurrentUser();
+  if (!user) {
+    const result = await signInWithPopup(auth, provider);
+    user = result.user;
+  }
+  await createOrOpenProfile(user);
+}
+
+unlockForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const password = passwordInput.value.trim();
+  message.style.color = "#d94b4b";
+  message.textContent = "";
+
+  // Password 1 -> study screen
+  if (password === "jee123") {
+    passwordInput.value = "";
+    studyUnlocked = true;
+    showScreen("study");
+    return;
+  }
+
+  // Password 2 -> chat screen
+  if (password !== "aaryaxyz") {
+    message.textContent = "Incorrect password. Try again.";
+    return;
+  }
+
+  unlockButton.disabled = true;
+  message.textContent = "Connecting to Google...";
+
+  try {
+    await openPrivateAccess();
+  } catch (error) {
+    console.error("Sign-in/profile error:", error);
+
+    if (error.code === "auth/popup-closed-by-user") {
+      message.textContent = "Google sign-in was cancelled.";
+    } else if (error.code === "auth/unauthorized-domain") {
+      message.textContent = "Add your website domain in Firebase Authorized Domains.";
+    } else if (
+      error.code === "PERMISSION_DENIED" ||
+      error.code === "database/permission-denied"
+    ) {
+      message.textContent = "Database access denied. Firebase Rules need to be configured.";
+    } else {
+      message.textContent =
+        "Login failed: " + (error.message || error.code || "Unknown error");
+    }
+  } finally {
+    unlockButton.disabled = false;
+  }
+});
+
+/* =====================================================
+   STUDY SCREEN
+   ===================================================== */
+$("studyBackBtn").addEventListener("click", () => history.back());
+
+document.querySelectorAll('#screen-study a[href^="#"]').forEach(link => {
+  link.addEventListener("click", event => {
+    event.preventDefault();
+    const id = link.getAttribute("href").slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+
+/* =====================================================
+   CHAT (FRIENDS) SCREEN
+   ===================================================== */
+let myUsername = "";
+let usernameDirectory = {};
+let selectedUser = null;
+let friendsCache = {};
+let stopFriendsListener = null;
+let stopDirectoryListener = null;
+let directoryLoaded = false;
+
+function showStatus(text) {
+  $("chatStatus").textContent = text;
+}
+
+function normalizeUsername(value) {
+  return String(value || "").trim().toLowerCase().replace(/^@/, "");
+}
+
+function goToChat(uid, username) {
+  openConversation(uid, username);
+}
+
+async function enterChat(user) {
+  me = user;
+  showScreen("chat");
+  await initChat();
+}
+
+async function initChat() {
+  const user = me;
+  if (!user) return;
+
+  $("myEmail").textContent = user.email || "Google account";
+
+  try {
+    const profileSnap = await get(ref(db, "users/" + user.uid));
+    if (me !== user) return;
+    const profile = profileSnap.val() || {};
+
+    myUsername = normalizeUsername(profile.username);
+    $("myUsername").textContent = myUsername ? "@" + myUsername : "Username not set";
+
+    if (!myUsername) {
+      showStatus("Your username is missing. Please check registration.");
+    }
+
+    if (stopDirectoryListener) stopDirectoryListener();
+
+    stopDirectoryListener = onValue(
+      ref(db, "usernames"),
+      snapshot => {
+        usernameDirectory = snapshot.val() || {};
+        directoryLoaded = true;
+        renderSuggestions();
+      },
+      error => {
+        console.error("Username directory error:", error);
+        showStatus("Suggestions access denied. Check Firebase Rules.");
+      }
+    );
+
+    listenToFriends();
+
+  } catch (error) {
+    console.error("Profile error:", error);
+    showStatus("Could not load profile. Check Firebase Rules.");
+  }
+}
+
+function emptyFriendsBox() {
+  const empty = document.createElement("div");
+  empty.className = "empty";
+  empty.textContent =
+    "Your friends will appear here. Search a username and tap Add Friend.";
+  return empty;
+}
+
+function resetChat() {
+  if (stopFriendsListener) { stopFriendsListener(); stopFriendsListener = null; }
+  if (stopDirectoryListener) { stopDirectoryListener(); stopDirectoryListener = null; }
+  stopConversation();
+  usernameDirectory = {};
+  directoryLoaded = false;
+  friendsCache = {};
+  selectedUser = null;
+  myUsername = "";
+  $("resultCard").classList.remove("show");
+  $("usernameSearch").value = "";
+  hideSuggestions();
+  showStatus("");
+  $("myUsername").textContent = "Your account";
+  $("myEmail").textContent = "Checking login...";
+  $("friendCount").textContent = "0 friends";
+  $("friendList").replaceChildren(emptyFriendsBox());
+}
+
+// If the Firebase session ends while inside the app, go back to the lock
+onAuthStateChanged(auth, user => {
+  if (!user && me) {
+    me = null;
+    resetChat();
+    if (currentScreen === "chat" || currentScreen === "conv") showScreen("lock");
+  }
+});
+
+function hideSuggestions() {
+  $("suggestions").classList.remove("show");
+  $("suggestions").replaceChildren();
+}
+
+function renderSuggestions() {
+  const q = normalizeUsername($("usernameSearch").value);
+  const box = $("suggestions");
+  box.replaceChildren();
+
+  if (!q || !directoryLoaded || !me) {
+    box.classList.remove("show");
+    return;
+  }
+
+  const matches = Object.keys(usernameDirectory)
+    .filter(name => name.startsWith(q) && usernameDirectory[name] !== me.uid)
+    .sort()
+    .slice(0, 8);
+
+  if (!matches.length) {
+    box.classList.remove("show");
+    return;
+  }
+
+  for (const username of matches) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "suggestion";
+    button.setAttribute("role", "option");
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = username.charAt(0).toUpperCase();
+
+    const details = document.createElement("div");
+    details.className = "details";
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = "@" + username;
+
+    const subtitle = document.createElement("div");
+    subtitle.className = "subtext";
+    subtitle.textContent = "View profile";
+
+    details.append(name, subtitle);
+    button.append(avatar, details);
+
+    button.addEventListener("click", () => {
+      $("usernameSearch").value = username;
+      hideSuggestions();
+      showUserProfile(username);
+    });
+
+    box.appendChild(button);
+  }
+
+  box.classList.add("show");
+}
+
+$("usernameSearch").addEventListener("input", renderSuggestions);
+$("usernameSearch").addEventListener("focus", renderSuggestions);
+
+document.addEventListener("click", event => {
+  if (
+    !$("searchForm").contains(event.target) &&
+    !$("suggestions").contains(event.target)
+  ) {
+    hideSuggestions();
+  }
+});
+
+async function showUserProfile(username) {
+  if (!me) return;
+
+  username = normalizeUsername(username);
+  $("resultCard").classList.remove("show");
+  selectedUser = null;
+
+  if (!username) {
+    showStatus("Enter a username.");
+    return;
+  }
+
+  if (!directoryLoaded) {
+    showStatus("Loading users. Please try again in a moment.");
+    return;
+  }
+
+  const targetUid = usernameDirectory[username];
+
+  if (typeof targetUid !== "string" || !targetUid) {
+    showStatus("User not found. Check the spelling.");
+    return;
+  }
+
+  if (targetUid === me.uid) {
+    showStatus("That's your own username!");
+    return;
+  }
+
+  selectedUser = { uid: targetUid, username };
+
+  $("resultAvatar").textContent = username.charAt(0).toUpperCase();
+  $("resultName").textContent = "@" + username;
+
+  const alreadyFriend = Boolean(friendsCache[targetUid]);
+
+  $("addFriendBtn").hidden = alreadyFriend;
+  $("openChatBtn").hidden = !alreadyFriend;
+  $("resultCard").classList.add("show");
+
+  showStatus(
+    alreadyFriend
+      ? "This user is already your friend."
+      : "User found! Add them to Your Friends."
+  );
+}
+
+$("searchForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideSuggestions();
+
+  if (!me) {
+    showStatus("Please wait for login to finish.");
+    return;
+  }
+
+  const username = normalizeUsername($("usernameSearch").value);
+  if (!username) {
+    showStatus("Enter a username.");
+    return;
+  }
+
+  await showUserProfile(username);
+});
+
+$("addFriendBtn").addEventListener("click", async () => {
+  if (!me || !selectedUser) return;
+
+  const button = $("addFriendBtn");
+  button.disabled = true;
+
+  try {
+    await set(
+      ref(db, `users/${me.uid}/friends/${selectedUser.uid}`),
+      { username: selectedUser.username, addedAt: Date.now() }
+    );
+
+    showStatus("Friend added! They are now in Your Friends.");
+    $("addFriendBtn").hidden = true;
+    $("openChatBtn").hidden = false;
+
+  } catch (error) {
+    console.error("Add friend error:", error);
+    showStatus("Could not add friend. Check Firebase Rules.");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("openChatBtn").addEventListener("click", () => {
+  if (selectedUser) goToChat(selectedUser.uid, selectedUser.username);
+});
+
+function listenToFriends() {
+  if (stopFriendsListener) stopFriendsListener();
+
+  stopFriendsListener = onValue(
+    ref(db, `users/${me.uid}/friends`),
+    snapshot => {
+      friendsCache = snapshot.val() || {};
+      renderFriends();
+
+      if (selectedUser) {
+        const isFriend = Boolean(friendsCache[selectedUser.uid]);
+        $("addFriendBtn").hidden = isFriend;
+        $("openChatBtn").hidden = !isFriend;
+      }
+    },
+    error => {
+      console.error("Friends list error:", error);
+      showStatus("Could not load friends. Check Firebase Rules.");
+    }
+  );
+}
+
+function renderFriends() {
+  if (!me) return;
+  const list = $("friendList");
+  list.replaceChildren();
+
+  const entries = Object.entries(friendsCache)
+    .filter(([uid, info]) => uid && uid !== me.uid && info);
+
+  $("friendCount").textContent =
+    `${entries.length} ${entries.length === 1 ? "friend" : "friends"}`;
+
+  if (!entries.length) {
+    list.appendChild(emptyFriendsBox());
+    return;
+  }
+
+  entries.sort((a, b) =>
+    String(a[1]?.username || "").localeCompare(String(b[1]?.username || ""))
+  );
+
+  for (const [uid, info] of entries) {
+    const username = String(info?.username || "user");
+
+    const row = document.createElement("div");
+    row.className = "friend-row";
+
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "friend-open";
+    open.setAttribute("aria-label", "Open chat with @" + username);
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = username.charAt(0).toUpperCase();
+
+    const details = document.createElement("div");
+    details.className = "details";
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = "@" + username;
+
+    const subtitle = document.createElement("div");
+    subtitle.className = "subtext";
+    subtitle.textContent = "Tap to open chat";
+
+    const arrow = document.createElement("div");
+    arrow.className = "subtext";
+    arrow.textContent = "›";
+
+    details.append(name, subtitle);
+    open.append(avatar, details, arrow);
+    open.addEventListener("click", () => goToChat(uid, username));
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "delete-btn";
+    del.textContent = "Delete";
+    del.title = "Remove friend";
+    del.setAttribute("aria-label", "Delete @" + username + " from friends");
+
+    del.addEventListener("click", async () => {
+      if (!confirm(`Remove @${username} from Your Friends?`)) return;
+
+      del.disabled = true;
+
+      try {
+        await remove(ref(db, `users/${me.uid}/friends/${uid}`));
+
+        if (selectedUser?.uid === uid) {
+          $("resultCard").classList.remove("show");
+          selectedUser = null;
+        }
+        showStatus(`@${username} removed from Your Friends.`);
+
+      } catch (error) {
+        console.error("Delete friend error:", error);
+        showStatus("Could not remove friend. Check Firebase Rules.");
+      } finally {
+        del.disabled = false;
+      }
+    });
+
+    row.append(open, del);
+    list.appendChild(row);
+  }
+}
+
+$("logoutBtn").addEventListener("click", async () => {
+  try {
+    // The auth listener above resets everything and returns to the lock screen
+    await signOut(auth);
+  } catch (error) {
+    console.error("Logout error:", error);
+    showStatus("Could not log out. Please try again.");
+  }
+});
+
+/* =====================================================
+   CONVERSATION SCREEN
+   ===================================================== */
+let otherUid = null;
+let requestedUsername = "Friend";
+let chatRef = null;
+let seenMessages = new Set();
+let stopMessages = null;
+let sending = false;
+let convToken = 0;
+
+function convStatus(text) {
+  $("convStatus").textContent = text;
+}
+
+function stopConversation() {
+  convToken++;
+  if (stopMessages) { stopMessages(); stopMessages = null; }
+  chatRef = null;
+  seenMessages = new Set();
+}
+
+function showLoadingBox(text) {
+  const box = document.createElement("div");
+  box.className = "empty";
+  box.textContent = text;
+  $("messages").replaceChildren(box);
+}
+
+function showMessage(messageId, data) {
+  if (!data || typeof data.text !== "string" || seenMessages.has(messageId)) return;
+  seenMessages.add(messageId);
+
+  const mine = data.senderUid === me.uid;
+  const row = document.createElement("div");
+  row.className = "message-row" + (mine ? " mine" : "");
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = data.text;
+
+  const meta = document.createElement("div");
+  meta.className = "message-meta";
+  const time = Number(data.timestamp);
+  meta.textContent = Number.isFinite(time)
+    ? new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
+
+  row.append(bubble, meta);
+  $("messages").appendChild(row);
+  $("messages").scrollTop = $("messages").scrollHeight;
+}
+
+function startChat(token) {
+  const ids = [me.uid, otherUid].sort();
+  chatRef = ref(db, `conversations/${ids[0]}/${ids[1]}/messages`);
+  const latest = query(chatRef, limitToLast(300));
+
+  stopMessages = onChildAdded(
+    latest,
+    snapshot => {
+      if (token !== convToken) return;
+      const firstMessage = $("messages").querySelector(".empty");
+      if (firstMessage) firstMessage.remove();
+      showMessage(snapshot.key, snapshot.val());
+    },
+    error => {
+      console.error("Message listener error:", error);
+      convStatus("Cannot load messages. Check your Firebase Rules.");
+    }
+  );
+
+  // onChildAdded never fires for an empty chat, so check for that case
+  get(query(chatRef, limitToLast(1))).then(snap => {
+    if (token === convToken && !snap.exists()) {
+      showLoadingBox("No messages yet. Say hello 👋");
+    }
+  }).catch(() => {});
+
+  $("headerStatus").textContent = "Real-time chat";
+  convStatus("Connected. Messages update automatically.");
+}
+
+async function openConversation(uid, username) {
+  stopConversation();
+  const token = convToken;
+
+  otherUid = uid;
+  requestedUsername = String(username || "Friend").replace(/^@/, "");
+
+  $("headerName").textContent = "@" + requestedUsername;
+  $("headerAvatar").textContent = requestedUsername.charAt(0).toUpperCase();
+  $("headerStatus").textContent = "Connecting...";
+  convStatus("Connecting to chat...");
+  showLoadingBox("Loading messages...");
+  $("messageInput").value = "";
+  $("messageInput").style.height = "auto";
+  $("sendBtn").disabled = false;
+
+  showScreen("conv");
+
+  if (!me || !otherUid || otherUid === me.uid) {
+    convStatus("Invalid friend. Go back and select someone.");
+    $("sendBtn").disabled = true;
+    return;
+  }
+
+  try {
+    const directory = await get(ref(db, "usernames"));
+    if (token !== convToken) return;
+    const allUsernames = directory.val() || {};
+    const validTarget = Object.entries(allUsernames).some(
+      ([name, id]) =>
+        id === otherUid &&
+        name.toLowerCase() === requestedUsername.toLowerCase()
+    );
+
+    if (!validTarget) {
+      convStatus("Friend profile could not be verified. Go back and search again.");
+      $("sendBtn").disabled = true;
+      return;
+    }
+
+    startChat(token);
+  } catch (error) {
+    if (token !== convToken) return;
+    console.error(error);
+    convStatus("Could not verify friend. Check Firebase Rules.");
+    $("sendBtn").disabled = true;
+  }
+}
+
+$("backBtn").addEventListener("click", () => history.back());
+
+$("messageInput").addEventListener("input", () => {
+  const input = $("messageInput");
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 130) + "px";
+});
+
+$("messageInput").addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    $("composer").requestSubmit();
+  }
+});
+
+$("composer").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!me || !chatRef || sending) return;
+
+  const input = $("messageInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  sending = true;
+  $("sendBtn").disabled = true;
+
+  try {
+    const messageRef = push(chatRef);
+    await set(messageRef, {
+      senderUid: me.uid,
+      text: text,
+      timestamp: Date.now()
+    });
+
+    input.value = "";
+    input.style.height = "auto";
+    input.focus();
+  } catch (error) {
+    console.error("Send error:", error);
+    convStatus("Message not sent. Check Firebase Rules and internet connection.");
+  } finally {
+    sending = false;
+    $("sendBtn").disabled = false;
+  }
+});
+
+</script>
+</body>
+</html>
